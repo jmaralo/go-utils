@@ -6,6 +6,9 @@ Generic enough utilities in go that might be useful.
 
 | package  | description                         |
 |----------|-------------------------------------|
+| mavp     | Moving average with variable period |
+| rinbuf   | Simple resizable ring buffer        |
+| generics | Collection of useful generic types  |
 
 ## Authors
 
