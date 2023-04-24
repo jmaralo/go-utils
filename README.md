@@ -1,5 +1,7 @@
 # go-utils
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/jmaralo/go-utils#section-readme.svg)](https://pkg.go.dev/github.com/jmaralo/go-utils#section-readme)
+
 Generic enough utilities in go that might be useful.
 
 ## utilities
