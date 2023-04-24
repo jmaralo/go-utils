@@ -1,3 +1,9 @@
+// Package mavp provides a generic implementation of a moving average with a
+// variable period.
+//
+// The intended use case is real time data visualization, where it might be
+// desirable to change the period if the frequency at which data is being
+// received changes.
 package mavp
 
 import (
@@ -11,6 +17,7 @@ type MovingAverage[N generics.Float] struct {
 	currAvg  N
 }
 
+// Create a new MovingAverage with the given period.
 func New[N generics.Float](period int) MovingAverage[N] {
 	return MovingAverage[N]{
 		buffer:   rinbuf.New[N](period),
@@ -19,6 +26,7 @@ func New[N generics.Float](period int) MovingAverage[N] {
 	}
 }
 
+// Add a new value to the moving average. Returns the current average.
 func (avg *MovingAverage[N]) Add(value N) (current N) {
 	if avg.elements >= avg.buffer.Len() {
 		return avg.addValue(value)
@@ -40,10 +48,13 @@ func (avg *MovingAverage[N]) addElement(value N) (current N) {
 	return avg.currAvg
 }
 
+// Returns the current average.
 func (avg *MovingAverage[N]) Current() N {
 	return avg.currAvg
 }
 
+// Change the period of the moving average. If the period is less
+// or equal to zero this function returns an error
 func (avg *MovingAverage[N]) Resize(period int) error {
 	if period > avg.buffer.Len() {
 		avg.Grow(period - avg.buffer.Len())
@@ -54,10 +65,14 @@ func (avg *MovingAverage[N]) Resize(period int) error {
 	return nil
 }
 
+// Increase the period of the moving average by the given amount.
 func (avg *MovingAverage[N]) Grow(amount int) {
 	avg.buffer.Grow(amount)
 }
 
+// Decrease the period of the moving average by the given amount.
+// If this causes the period to become less than or equal to zero
+// this function returns an error.
 func (avg *MovingAverage[N]) Shrink(amount int) error {
 	prevSize := avg.elements
 
